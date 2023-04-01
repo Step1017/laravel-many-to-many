@@ -23,7 +23,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             TypeSeeder::class, //prima si deve fare il seeder dei tipi e poi del postseeder 
-            ProjectSeeder::class
+            ProjectSeeder::class,
+            TechnologySeeder::class //in questo caso non è importante se viene messo prima di Project in quanto è una relazione many-to-many
         ]);
     }
 }
