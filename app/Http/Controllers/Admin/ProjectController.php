@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 //Importazione Models:
 use App\Models\Project;
 use App\Models\Type;
+use App\Models\Technology;
 
 //Importazione Requests:
 use App\Http\Requests\StoreProjectRequest;
@@ -45,7 +46,8 @@ class ProjectController extends Controller
     public function create()
     {
         $types = Type::all();
-        return view('admin.projects.create', compact('types'));
+        $technologies = Technology::all();
+        return view('admin.projects.create', compact('types', 'technologies'));
     }
 
     /**
@@ -81,6 +83,14 @@ class ProjectController extends Controller
 
         $newProject = Project::create($data);
 
+        if (array_key_exists('technologies', $data)){
+            $newProject->technologies()->sync($data['technologies']);
+            // OPPURE
+            // foreach ($data['technologies'] as $technologyId) {
+            //     $newProject->technologies()->attach($technologyId);
+            // }
+        }
+
         Mail::to('stefania@classe84.com')->send(new NewProject($newProject));
 
         return redirect()->route('admin.projects.show', $newProject->id)->with('success', 'Progetto aggiunto con successo');
@@ -110,7 +120,9 @@ class ProjectController extends Controller
     public function edit(Project $project)
     {
         $types = Type::all();
-        return view('admin.projects.edit', compact('project', 'types'));
+        $technologies = Technology::all();
+
+        return view('admin.projects.edit', compact('project', 'types', 'technologies'));
     }
 
     /**
