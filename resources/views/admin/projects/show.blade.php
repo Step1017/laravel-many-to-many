@@ -26,6 +26,16 @@
                         Nessuna tipologia
                     @endif
                 </h3>
+                <h4>
+                    Tecnologie:
+                    @if (count($project->technologies) > 0)
+                        @foreach ($project->technologies as $technology)
+                            <ul>
+                                <a class="text-decoration-none" href="#">{{$technology->name }}</a>
+                            </ul>
+                        @endforeach
+                    @endif
+                </h4>
                 <p>
                     {{ $project->description }}
                 </p>

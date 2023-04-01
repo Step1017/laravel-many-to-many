@@ -159,6 +159,22 @@ class ProjectController extends Controller
 
         $project->update($data);
 
+        if (array_key_exists('technologies', $data)){
+            // foreach ($projects->technologies as $technology) {
+            //     $project->technologies()->detach($technology);
+            // }
+            // foreach ($data['technologies'] as $technologyId) {
+            //     $project->technologies()->attach($technologyId);
+            // }
+            // OPPURE
+            $project->technologies()->sync($data['technologies']);
+        }
+        else{
+            // $project->technologies()->sync([]);
+            // OPPURE
+            $project->technologies()->detach();
+        }
+
         return redirect()->route('admin.projects.show', $project->id)->with('success', 'Progetto aggiornato con successo!');
     }
 
