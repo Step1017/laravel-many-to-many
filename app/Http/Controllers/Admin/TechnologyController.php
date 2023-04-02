@@ -7,6 +7,9 @@ use App\Models\Technology;
 use App\Http\Requests\StoreTechnologyRequest;
 use App\Http\Requests\UpdateTechnologyRequest;
 
+//Helpers:
+use Illuminate\Support\Str;
+
 class TechnologyController extends Controller
 {
     /**
@@ -28,7 +31,7 @@ class TechnologyController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.technologies.create');
     }
 
     /**
@@ -39,7 +42,12 @@ class TechnologyController extends Controller
      */
     public function store(StoreTechnologyRequest $request)
     {
-        //
+        $data = $request->validated();
+        $data['slug'] = Str::slug($data['name']);
+
+        $newTechnology = Technology::create($data);
+
+        return redirect()->route('admin.technologies.show', $newTechnology->id)->with('success', 'Nuova tecnologia creata con successo');
     }
 
     /**
